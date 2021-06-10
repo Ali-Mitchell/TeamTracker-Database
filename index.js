@@ -54,12 +54,17 @@ async function viewRoles(){
 
 //view all employees
 async function viewEmployees(){
-    const employees = await db.promise().query(`SELECT employees.id, employees.first_name, employees.last_name, roles.title AS title, departments.name AS department, roles.salary, 
-                                                    CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees 
-                                                    LEFT JOIN employees manager ON manager.id = employees.manager_id 
-                                                    LEFT JOIN roles ON employees.role_id = roles.id 
-                                                    LEFT JOIN departments ON departments.id = roles.department_id`);
+    // why do we need an await on the database query?
+    // a query is basically pulling data from the database and returning that into the const employees
+    const employees = await db.promise().query(
+        `SELECT employees.id, employees.first_name, employees.last_name, roles.title AS title, departments.name AS department, roles.salary, 
+        CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees 
+        LEFT JOIN employees manager ON manager.id = employees.manager_id 
+        LEFT JOIN roles ON employees.role_id = roles.id 
+        LEFT JOIN departments ON departments.id = roles.department_id`);
     console.table(employees[0]);
+    // why do we need a 0 index in this console?
+    // My employee seeds are not feeding into the database, and it's breaking the add employee function 
     questionPrompt();
 };
 
@@ -76,15 +81,15 @@ async function addDepartment(){
 
     let answer = addDept.deptName;
     await db.promise().query(`INSERT INTO departments(name) VALUE (?)`, answer);
-    console.log(`=====================================`);
+    console.log(`______________________________________`);
     console.log(`The ${answer} department has been added!`);
-    console.log(`=====================================`);
     questionPrompt();
 };
 
 //add role
 async function addRole() {
     const depts = await db.promise().query(`SELECT * FROM departments`);
+    // What is going on here? Can we walk through this 
     const deptNames = depts[0].map((names) => {
         return {
             name: names.name,
