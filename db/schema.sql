@@ -13,7 +13,7 @@ CREATE TABLE roles (
     title VARCHAR(30) NOT NULL,
     salary DECIMAL,
     department_id INTEGER,
-    FOREIGN KEY (department_id) REFERENCES departments(id)
+    FOREIGN KEY (department_id) REFERENCES departments(id) 
 );
 
 -- I don't fully understand primary Key, Foreign Key and References aspect of this. 

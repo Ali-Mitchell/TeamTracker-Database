@@ -140,6 +140,12 @@ async function addEmployee(){
         }
     });
 
+    // console.log(allBosses.length);
+    // if(allBosses.length === 0 ){
+        allBosses.push({ name: 'N/A', value : null})
+    
+    console.log(allBosses);
+
     const newEmpl = await inquirer.prompt([
         {
             type:'input',
@@ -161,7 +167,7 @@ async function addEmployee(){
             type: 'list',
             name: 'manager',
             message: 'Select a manager:',
-            choices: allBosses
+            choices: allBosses,
         }
     ]);
 
